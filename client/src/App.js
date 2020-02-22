@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Segment, Card} from 'semantic-ui-react';
 
 import './App.css';
 import PlayerCard from './components/PlayerCard';
@@ -29,13 +30,17 @@ class App extends React.Component {
 
     render() {
       return (
-        <div className="container">
+        <div className='container'>
+          <Segment >
+            <Card.Group>
 
-          {this.state.players.map((player, index) => {
-          return(
-            <PlayerCard key={index} player={player} />
-          )
-        })}
+            {this.state.players.map((player, index) => {
+            return(
+              <PlayerCard key={index} player={player} />
+            )
+          })}
+            </Card.Group>
+          </Segment>
         </div>
         
       )

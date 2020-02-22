@@ -1,18 +1,18 @@
 import React from 'react';
+import { Segment, Card, Icon } from 'semantic-ui-react';
 
 const PlayerCard = props => {
     console.log(props)
     return (
-        <div className="card">
-            <div>
-                <h2 className="name">{props.player.name}</h2>
-                <h6>{props.player.country}</h6>
-            </div>
-            <div className="searches">
-                <h4>Searches: </h4>
-                <h2>{props.player.searches}</h2>
-            </div>
-        </div>
+            <Card className='card'>
+                <Card.Content>
+                    <Card.Header>{props.player.name}</Card.Header>
+                        <Card.Meta><Icon name='globe' />  {props.player.country}</Card.Meta>
+                    <Card.Content extra>
+                        <Card.Meta><strong>Searches: </strong>{props.player.searches}</Card.Meta>
+                    </Card.Content>
+                </Card.Content>
+            </Card>
     )
 }
 

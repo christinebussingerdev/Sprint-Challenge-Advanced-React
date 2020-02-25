@@ -1,40 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Segment, Card} from 'semantic-ui-react';
 
 import './App.css';
 import PlayerCard from './components/PlayerCard';
+import {useDarkMode} from './components/useDarkMode';
 
-class App extends React.Component {
-  constructor() {
-    super();
 
-    this.state = {
-      players: []
-    };
-  }
+const App = () => {
 
-    componentDidMount() {
-      return(
-        axios
-        .get('http://localhost:5000/api/players')
-        .then(res => {
-          console.log(res.data)
-          this.setState({players: res.data})
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      )
-    }
+const [players, setPlayers] = useState([])
 
-    render() {
+const [darkMode, setDarkMode] = useDarkMode(false);
+const toggleMode = e => {
+  e.preventDefault();
+  setDarkMode(!darkMode);
+};
+  useEffect(() => {
+    axios
+    .get('http://localhost:5000/api/players')
+    .then(res => {
+      console.log(res.data)
+      setPlayers(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }, []);
+
       return (
         <div className='container'>
+          <div className="dark-mode__toggle">
+            <div
+              onClick={toggleMode}
+              className={darkMode ? 'toggle toggled' : 'toggle'}
+            />
+        </div>
           <Segment >
             <Card.Group>
 
-            {this.state.players.map((player, index) => {
+            {players.map((player, index) => {
             return(
               <PlayerCard key={index} player={player} />
             )
@@ -44,9 +49,7 @@ class App extends React.Component {
         </div>
         
       )
-    }
 }
-
 
 
 export default App;

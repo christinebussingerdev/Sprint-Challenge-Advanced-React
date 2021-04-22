@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import {Segment, Card} from 'semantic-ui-react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import PlayerCard from './components/PlayerCard';
+import {useDarkMode} from './components/useDarkMode';
+
+
+const App = () => {
+
+const [players, setPlayers] = useState([])
+
+const [darkMode, setDarkMode] = useDarkMode(false);
+const toggleMode = e => {
+  e.preventDefault();
+  setDarkMode(!darkMode);
+};
+  useEffect(() => {
+    axios
+    .get('http://localhost:5000/api/players')
+    .then(res => {
+      console.log(res.data)
+      setPlayers(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }, []);
+
+      return (
+        <div className='container'>
+          <div className="dark-mode__toggle">
+            <div
+              onClick={toggleMode}
+              className={darkMode ? 'toggle toggled' : 'toggle'}
+            />
+        </div>
+          <Segment >
+            <Card.Group>
+
+            {players.map((player, index) => {
+            return(
+              <PlayerCard key={index} player={player} />
+            )
+          })}
+            </Card.Group>
+          </Segment>
+        </div>
+        
+      )
 }
+
 
 export default App;
